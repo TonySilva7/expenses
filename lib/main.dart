@@ -76,7 +76,10 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.titlePage),
         actions: [
-          IconButton(onPressed: () => null, icon: const Icon(Icons.add))
+          IconButton(
+            onPressed: () => _openTransactionFormModal(context),
+            icon: const Icon(Icons.add),
+          )
         ],
       ),
       body: SingleChildScrollView(
@@ -97,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => null,
+        onPressed: () => _openTransactionFormModal(context),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
