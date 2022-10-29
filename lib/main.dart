@@ -25,7 +25,7 @@ class ExpensesApp extends StatelessWidget {
             fontFamily: 'OpenSans',
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: Colors.black87,
           ),
         ),
         appBarTheme: const AppBarTheme(
@@ -48,20 +48,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
-  final _transactions = [
-    Transactions(
-      id: 't1',
-      title: 'Novo Tênis de Corrida',
-      value: 310.76,
-      date: DateTime.now(),
-    ),
-    Transactions(
-      id: 't2',
-      title: 'Conta de Luz',
-      value: 211.30,
-      date: DateTime.now(),
-    ),
-  ];
+  final List<Transactions> _transactions = [];
 
   _addTransaction(String title, double value) {
     final newTransaction = Transactions(
