@@ -1,53 +1,36 @@
-import 'package:flutter/material.dart';
-import './components/transaction_form.dart';
-import './components/transaction_list.dart';
-import 'models/transaction.dart';
 import 'dart:math';
+import 'package:expenses/components/transaction_form.dart';
+import 'package:expenses/components/transaction_list.dart';
+import 'package:expenses/models/transaction.dart';
+import 'package:flutter/material.dart';
 
-main() => runApp(const ExpensesApp());
+void main(List<String> args) => runApp(const ExpensesApp());
 
 class ExpensesApp extends StatelessWidget {
   const ExpensesApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData tema = ThemeData();
-
     return MaterialApp(
-      home: const MyHomePage(),
-      theme: tema.copyWith(
-        colorScheme: tema.colorScheme.copyWith(
-          primary: Colors.purple,
-          secondary: Colors.amber,
-        ),
-        textTheme: tema.textTheme.copyWith(
-          headline6: const TextStyle(
-            fontFamily: 'OpenSans',
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-        appBarTheme: const AppBarTheme(
-          titleTextStyle: TextStyle(
-            fontFamily: 'OpenSans',
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+      title: 'Expenses',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      home: const MyHomePage(titlePage: 'Dados Pessoais'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  final String titlePage;
+
+  const MyHomePage({super.key, required this.titlePage});
 
   @override
-  MyHomePageState createState() => MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> {
   final _transactions = [
     Transactions(
       id: 't1',
@@ -62,6 +45,17 @@ class MyHomePageState extends State<MyHomePage> {
       date: DateTime.now(),
     ),
   ];
+
+  _openTransactionFormModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (_) {
+        return TransactionForm(
+          handleSubmit: _addTransaction,
+        );
+      },
+    );
+  }
 
   _addTransaction(String title, double value) {
     final newTransaction = Transactions(
@@ -78,31 +72,22 @@ class MyHomePageState extends State<MyHomePage> {
     Navigator.of(context).pop();
   }
 
-  _openTransactionFormModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (_) {
-        return TransactionForm(handleSubmit: _addTransaction);
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Despesas Pessoais'),
-        actions: <Widget>[
+        title: Text(widget.titlePage),
+        actions: [
           IconButton(
-            icon: const Icon(Icons.add),
             onPressed: () => _openTransactionFormModal(context),
-          ),
+            icon: const Icon(Icons.add),
+          )
         ],
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
+          children: [
             const SizedBox(
               width: double.infinity,
               child: Card(
