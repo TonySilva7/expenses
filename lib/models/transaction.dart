@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class Transactions extends StatelessWidget {
+class Transaction extends StatelessWidget {
   final String id;
   final String title;
   final double value;
   final DateTime date;
 
-  const Transactions({
+  const Transaction({
     super.key,
     required this.id,
     required this.title,

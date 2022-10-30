@@ -5,8 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
-  final List<Transactions> transactions;
-  TransactionList({super.key, required this.transactions});
+  final List<Transaction> transactions;
+  const TransactionList({super.key, required this.transactions});
 
   String formatNumberToBrazilian(double value) {
     return 'R\$ ${value.toStringAsFixed(2).replaceAll('.', ',')}';
@@ -49,58 +49,46 @@ class TransactionList extends StatelessWidget {
           : ListView.builder(
               itemCount: transactions.length,
               itemBuilder: (ctx, index) {
-                final tr = transactions[index];
+                final trans = transactions[index];
 
                 return Card(
-                  child: Row(children: <Widget>[
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 15,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .primary
-                            .withOpacity(0.1),
-                        border: Border.all(
-                          color: Theme.of(context).colorScheme.primary,
-                          width: 1.5,
-                        ),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      padding: const EdgeInsets.all(5),
-                      child: Text(
-                        NumberFormat.currency(
-                          locale: 'pt_BR',
-                          symbol: 'R\$',
-                          decimalDigits: 2,
-                        ).format(tr.value),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Theme.of(context).colorScheme.primary,
+                  elevation: 5,
+                  margin: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 5,
+                  ),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      radius: 30,
+                      child: Padding(
+                        padding: const EdgeInsets.all(6),
+                        child: FittedBox(
+                          child: Text(formatNumberToBrazilian(trans.value)),
                         ),
                       ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          // style: const TextStyle(
-                          //   fontSize: 16,
-                          //   fontWeight: FontWeight.bold,
-                          // ),
-                          style: Theme.of(context).textTheme.headline6,
-                          tr.title,
-                        ),
-                        Text(
-                          style: const TextStyle(color: Colors.grey),
-                          formatDateToBrazilian(tr.date),
-                        ),
-                      ],
-                    )
-                  ]),
+                    title: Text(
+                      trans.title,
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                    subtitle: Text(
+                      formatDateToBrazilian(trans.date),
+                    ),
+                    trailing: MediaQuery.of(context).size.width > 460
+                        ? TextButton.icon(
+                            onPressed: () {},
+                            icon: const Icon(Icons.delete),
+                            label: const Text('Excluir'),
+                            style: TextButton.styleFrom(
+                              foregroundColor: Theme.of(context).errorColor,
+                            ),
+                          )
+                        : IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.delete),
+                            color: Theme.of(context).errorColor,
+                          ),
+                  ),
                 );
               },
             ),
