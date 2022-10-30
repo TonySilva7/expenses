@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-
+import 'package:flutter_svg/flutter_svg.dart';
 import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transactions> transactions;
-  const TransactionList({super.key, required this.transactions});
+  TransactionList({super.key, required this.transactions});
 
   String formatNumberToBrazilian(double value) {
     return 'R\$ ${value.toStringAsFixed(2).replaceAll('.', ',')}';
@@ -34,9 +34,14 @@ class TransactionList extends StatelessWidget {
                 ),
                 SizedBox(
                   height: 200,
-                  child: Image.asset(
-                    'assets/images/waiting.jpeg',
-                    fit: BoxFit.cover,
+                  // child: Image.asset(
+                  //   'assets/images/waiting.jpeg',
+                  //   fit: BoxFit.cover,
+                  // ),
+                  child: SvgPicture.asset(
+                    'assets/images/waiting.svg',
+                    // color: Theme.of(context).colorScheme.secondary,
+                    semanticsLabel: 'A red up arrow',
                   ),
                 ),
               ],
