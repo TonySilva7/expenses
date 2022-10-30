@@ -28,6 +28,9 @@ class ExpensesApp extends StatelessWidget {
             fontWeight: FontWeight.bold,
             color: Colors.black87,
           ),
+          button: const TextStyle(
+            color: Colors.white,
+          ),
         ),
         appBarTheme: const AppBarTheme(
           titleTextStyle: TextStyle(
@@ -49,38 +52,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [
-    Transaction(
-      id: 't0',
-      title: 'Conta Antiga',
-      value: 400.00,
-      date: DateTime.now().subtract(const Duration(days: 33)),
-    ),
-    Transaction(
-      id: 't1',
-      title: 'Novo Tênis de Corrida',
-      value: 310.76,
-      date: DateTime.now().subtract(const Duration(days: 3)),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Conta de Luz',
-      value: 211.30,
-      date: DateTime.now().subtract(const Duration(days: 4)),
-    ),
-    Transaction(
-      id: 't3',
-      title: 'Internet',
-      value: 120.80,
-      date: DateTime.now().subtract(const Duration(days: 4)),
-    ),
-    Transaction(
-      id: 't4',
-      title: 'Cartão de Crédito',
-      value: 1450.00,
-      date: DateTime.now().subtract(const Duration(days: 4)),
-    ),
-  ];
+  final List<Transaction> _transactions = [];
 
   // retorna uma lista de transações que foram realizadas nos últimos 7 dias
   List<Transaction> get _recentTransactions {
@@ -93,12 +65,12 @@ class MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  _addTransaction(String title, double value) {
+  _addTransaction(String title, double value, DateTime date) {
     final newTransaction = Transaction(
       id: Random().nextDouble().toString(),
       title: title,
       value: value,
-      date: DateTime.now(),
+      date: date,
     );
 
     setState(() {
