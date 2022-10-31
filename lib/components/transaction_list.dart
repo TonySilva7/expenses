@@ -6,7 +6,13 @@ import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
-  const TransactionList({super.key, required this.transactions});
+  final void Function(String) onRemove;
+
+  const TransactionList({
+    super.key,
+    required this.transactions,
+    required this.onRemove,
+  });
 
   String formatNumberToBrazilian(double value) {
     return 'R\$ ${value.toStringAsFixed(2).replaceAll('.', ',')}';
@@ -21,7 +27,7 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 300,
+      height: 430,
       child: transactions.isEmpty
           ? Column(
               children: [
@@ -84,7 +90,7 @@ class TransactionList extends StatelessWidget {
                             ),
                           )
                         : IconButton(
-                            onPressed: () {},
+                            onPressed: () => onRemove(trans.id),
                             icon: const Icon(Icons.delete),
                             color: Theme.of(context).errorColor,
                           ),
