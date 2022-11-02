@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -26,7 +29,8 @@ class _TransactionFormState extends State<TransactionForm> {
     widget.handleSubmit(title, value, _selectedDate);
   }
 
-  _showDatePicker() {
+  // date picker Android
+  _showDatePickerAndroid() {
     showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -41,6 +45,37 @@ class _TransactionFormState extends State<TransactionForm> {
         _selectedDate = pickedDate;
       });
     });
+  }
+
+  // date picker iOS
+  _showDatePickerIOS() {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (_) => Container(
+        height: 200,
+        color: Colors.white,
+        child: CupertinoDatePicker(
+          mode: CupertinoDatePickerMode.date,
+          initialDateTime: DateTime.now(),
+          minimumDate: DateTime(2021),
+          maximumDate: DateTime.now(),
+          onDateTimeChanged: (pickedDate) {
+            if (pickedDate == null) {
+              return;
+            }
+
+            setState(() {
+              _selectedDate = pickedDate;
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  // show date picker ios or android based in the platform
+  _showDatePicker() {
+    Platform.isIOS ? _showDatePickerIOS() : _showDatePickerAndroid();
   }
 
   @override

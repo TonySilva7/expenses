@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
@@ -84,7 +85,7 @@ class TransactionList extends StatelessWidget {
                   ),
                   trailing: MediaQuery.of(context).size.width > 460
                       ? TextButton.icon(
-                          onPressed: () {},
+                          onPressed: () => onRemove(trans.id),
                           icon: const Icon(Icons.delete),
                           label: const Text('Excluir'),
                           style: TextButton.styleFrom(
