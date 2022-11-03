@@ -1,8 +1,7 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
+import 'package:expenses/components/adaptative_button.dart';
+import 'package:expenses/components/adaptative_date_picker.dart';
+import 'package:expenses/components/adaptative_textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class TransactionForm extends StatefulWidget {
   final void Function(String, double, DateTime) handleSubmit;
@@ -29,55 +28,6 @@ class _TransactionFormState extends State<TransactionForm> {
     widget.handleSubmit(title, value, _selectedDate);
   }
 
-  // date picker Android
-  _showDatePickerAndroid() {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2021),
-      lastDate: DateTime.now(),
-    ).then((pickedDate) {
-      if (pickedDate == null) {
-        return;
-      }
-
-      setState(() {
-        _selectedDate = pickedDate;
-      });
-    });
-  }
-
-  // date picker iOS
-  _showDatePickerIOS() {
-    showCupertinoModalPopup(
-      context: context,
-      builder: (_) => Container(
-        height: 200,
-        color: Colors.white,
-        child: CupertinoDatePicker(
-          mode: CupertinoDatePickerMode.date,
-          initialDateTime: DateTime.now(),
-          minimumDate: DateTime(2021),
-          maximumDate: DateTime.now(),
-          onDateTimeChanged: (pickedDate) {
-            if (pickedDate == null) {
-              return;
-            }
-
-            setState(() {
-              _selectedDate = pickedDate;
-            });
-          },
-        ),
-      ),
-    );
-  }
-
-  // show date picker ios or android based in the platform
-  _showDatePicker() {
-    Platform.isIOS ? _showDatePickerIOS() : _showDatePickerAndroid();
-  }
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -92,48 +42,32 @@ class _TransactionFormState extends State<TransactionForm> {
           ),
           child: Column(
             children: <Widget>[
-              TextField(
-                decoration: const InputDecoration(labelText: 'Título'),
+              AdaptativeTextField(
                 controller: _titleController,
-                onSubmitted: (_) => _handleOnSubmit(),
+                label: 'Título',
+                onSubmitted: (_) => _handleOnSubmit,
+                keyboardType: TextInputType.text,
+                placeholder: 'Informe o título',
               ),
-              TextField(
+              AdaptativeTextField(
                 controller: _valueController,
+                label: 'Valor (R\$)',
+                onSubmitted: (_) => _handleOnSubmit,
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                onSubmitted: (_) => _handleOnSubmit(),
-                decoration: const InputDecoration(labelText: 'Valor (R\$)'),
+                placeholder: 'Informe o valor',
               ),
-              SizedBox(
-                height: 70,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        'Data Selecionada: ${DateFormat('dd/MM/y').format(_selectedDate)}',
-                      ),
-                    ),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        foregroundColor: Theme.of(context).colorScheme.primary,
-                      ),
-                      onPressed: _showDatePicker, // date picker do flutter
-                      child: const Text('Selecionar data'),
-                    ),
-                  ],
-                ),
+              AdaptativeDatePicker(
+                selectedDate: _selectedDate,
+                onDateChanged: (newDate) {
+                  setState(() {
+                    _selectedDate = newDate;
+                  });
+                },
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  ElevatedButton(
-                    onPressed: _handleOnSubmit,
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Theme.of(context).textTheme.button?.color,
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                    ),
-                    child: const Text('Nova Transação'),
-                  ),
+                  AdaptativeButton(onPressed: _handleOnSubmit, label: 'Nova Transação'),
                 ],
               ),
             ],
