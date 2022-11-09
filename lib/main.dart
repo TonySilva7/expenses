@@ -55,7 +55,7 @@ class MyHomePage extends StatefulWidget {
   MyHomePageState createState() => MyHomePageState();
 }
 
-class MyHomePageState extends State<MyHomePage> {
+class MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   final List<Transaction> _transactions = [];
   bool _showChart = false;
 
@@ -68,6 +68,23 @@ class MyHomePageState extends State<MyHomePage> {
         ),
       );
     }).toList();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print(state);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   _addTransaction(String title, double value, DateTime date) {
@@ -142,8 +159,7 @@ class MyHomePageState extends State<MyHomePage> {
       actions: actions,
     );
 
-    final availableHeight =
-        mediaQuery.size.height - mediaQuery.padding.top - appBar.preferredSize.height;
+    final availableHeight = mediaQuery.size.height - mediaQuery.padding.top - appBar.preferredSize.height;
 
     final bodyPage = SafeArea(
       child: SingleChildScrollView(
